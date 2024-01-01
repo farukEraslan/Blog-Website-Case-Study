@@ -9,6 +9,13 @@ namespace BlogWebsite.Core.Concrete
 {
     public class CategoryEntity : BaseEntity
     {
+        public CategoryEntity()
+        {
+            this.BlogPosts = new List<BlogPostEntity>();
+        }
         public string CategoryName { get; set; }
+
+        // NAvi Prop
+        public List<BlogPostEntity> BlogPosts { get; set; }
     }
 }
