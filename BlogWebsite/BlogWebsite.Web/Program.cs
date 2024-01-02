@@ -1,3 +1,8 @@
+using AutoMapper;
+using BlogWebsite.Core.Concrete;
+using BlogWebsite.DataAccess.Context;
+using Microsoft.EntityFrameworkCore;
+
 namespace BlogWebsite.Web
 {
     public class Program
@@ -8,6 +13,21 @@ namespace BlogWebsite.Web
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+
+            // Database Connection String
+            builder.Services.AddDbContext<BlogWebsiteDbContext>(options =>
+            {
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+            });
+
+            // Automapper
+            builder.Services.AddAutoMapper(typeof(Profile));
+
+            // Identity
+            builder.Services.AddDefaultIdentity<UserEntity>(options =>
+            {
+
+            }).AddRoles<RoleEntity>().AddEntityFrameworkStores<BlogWebsiteDbContext>();
 
             var app = builder.Build();
 

@@ -4,6 +4,7 @@ using BlogWebsite.DataAccess.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BlogWebsite.DataAccess.Migrations
 {
     [DbContext(typeof(BlogWebsiteDbContext))]
-    partial class BlogWebsiteDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240102063900_newPropOnUser")]
+    partial class newPropOnUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -136,18 +139,6 @@ namespace BlogWebsite.DataAccess.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("5af5f45b-7682-479c-a6e5-7dd90e1915c5"),
-                            Name = "Admin"
-                        },
-                        new
-                        {
-                            Id = new Guid("7d73ae79-440f-4c39-b863-e90c4bea3c7c"),
-                            Name = "Author"
-                        });
                 });
 
             modelBuilder.Entity("BlogWebsite.Core.Concrete.TagEntity", b =>
