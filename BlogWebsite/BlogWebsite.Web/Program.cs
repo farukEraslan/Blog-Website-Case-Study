@@ -39,6 +39,21 @@ namespace BlogWebsite.Web
                 config.SlidingExpiration = true;
             });
 
+            // Yetki Kontrolü Tanýtma
+            builder.Services.AddAuthorization(options =>
+            {
+                options.AddPolicy("Admin", policy =>
+                {
+                    policy.RequireRole("Admin");
+                });
+
+                options.AddPolicy("Author", policy =>
+                {
+                    policy.RequireRole("Author");
+                });
+            });
+
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

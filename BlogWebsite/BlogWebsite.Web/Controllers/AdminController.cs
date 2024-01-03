@@ -1,11 +1,13 @@
 ﻿using AutoMapper;
 using BlogWebsite.Core.Concrete;
 using BlogWebsite.Core.DTO;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BlogWebsite.Web.Controllers
 {
+    [Authorize(Policy = "Admin")]
     public class AdminController : Controller
     {
         private readonly IMapper _mapper;
