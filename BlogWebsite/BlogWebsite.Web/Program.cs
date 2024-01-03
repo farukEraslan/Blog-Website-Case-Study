@@ -29,6 +29,16 @@ namespace BlogWebsite.Web
 
             }).AddRoles<RoleEntity>().AddEntityFrameworkStores<BlogWebsiteDbContext>();
 
+            // Login Cookie Settings
+            builder.Services.ConfigureApplicationCookie(config =>
+            {
+                //Login Path
+                config.LoginPath = new PathString("/Home/Login");
+                config.AccessDeniedPath = new PathString("/Home/Error");
+                config.Cookie.HttpOnly = true;
+                config.SlidingExpiration = true;
+            });
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -44,6 +54,7 @@ namespace BlogWebsite.Web
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllerRoute(

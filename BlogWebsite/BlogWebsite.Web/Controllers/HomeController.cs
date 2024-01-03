@@ -30,19 +30,37 @@ namespace BlogWebsite.Web.Controllers
             return View();
         }
 
-        public async Task<IActionResult> SignIn(LoginDTO loginDTO) 
+        public async Task<IActionResult> SignIn(LoginDTO loginDTO)
         {
             var user = await _userManager.FindByEmailAsync(loginDTO.Email);
             var result = await _signInManager.PasswordSignInAsync(user, loginDTO.Password, false, false);
             if (result.Succeeded)
             {
-                return RedirectToAction("Index", "Home");
+
+                if (HttpContext.User.IsInRole("Admin"))
+                {
+                    return RedirectToAction("Index", "Admin");
+                }
+                else if (HttpContext.User.IsInRole("Author"))
+                {
+                    return RedirectToAction("Index", "Author");
+                }
+                else
+                {
+                    return RedirectToAction("Login", "Home");
+                }
             }
             else
             {
                 return RedirectToAction("Login", "Home");
             }
-            
+
+        }
+
+        public async Task<IActionResult> SignOut()
+        {
+            await _signInManager.SignOutAsync();
+            return RedirectToAction("Index", "Home");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

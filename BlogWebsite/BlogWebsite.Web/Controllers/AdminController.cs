@@ -49,11 +49,11 @@ namespace BlogWebsite.Web.Controllers
                     newUser.FirstName = userDTO.FirstName;
                     newUser.LastName = userDTO.LastName;
                     newUser.UserName = Guid.NewGuid().ToString();
-
                     var result = await _userManager.CreateAsync(newUser, userDTO.Password);
 
                     if (result.Succeeded)
                     {
+                        await _userManager.AddToRoleAsync(newUser, "Author");
                         return RedirectToAction("AuthorCreate", "Admin");
                     }
                     else
