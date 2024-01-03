@@ -1,4 +1,5 @@
 using AutoMapper;
+using BlogWebsite.Business.MapProfiles;
 using BlogWebsite.Core.Concrete;
 using BlogWebsite.DataAccess.Context;
 using Microsoft.EntityFrameworkCore;
@@ -21,7 +22,7 @@ namespace BlogWebsite.Web
             });
 
             // Automapper
-            builder.Services.AddAutoMapper(typeof(Profile));
+            builder.Services.AddAutoMapper(typeof(EntityMapper));
 
             // Identity
             builder.Services.AddDefaultIdentity<UserEntity>(options =>
@@ -37,6 +38,15 @@ namespace BlogWebsite.Web
                 config.AccessDeniedPath = new PathString("/Home/Error");
                 config.Cookie.HttpOnly = true;
                 config.SlidingExpiration = true;
+                config.ExpireTimeSpan = TimeSpan.FromHours(1);
+            });
+
+            // Cookienin süresini ayarlama
+            builder.Services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(10);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
             });
 
             // Yetki Kontrolü Tanýtma

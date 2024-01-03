@@ -19,9 +19,10 @@ namespace BlogWebsite.Web.Controllers
             _userManager = userManager;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var userList = await _userManager.GetUsersInRoleAsync("Author");
+            return View(userList);
         }
 
         public IActionResult AuthorCreate()
@@ -29,14 +30,18 @@ namespace BlogWebsite.Web.Controllers
             return View();
         }
 
-        public IActionResult AuthorUpdate()
+        public async Task<IActionResult> AuthorUpdate(Guid id)
         {
-            return View();
+            var user = await _userManager.FindByIdAsync(id.ToString());
+            var updateUser = _mapper.Map<UserUpdateDTO>(user);
+            return View(updateUser);
         }
 
-        public IActionResult AuthorDelete()
+        public async Task<IActionResult> AuthorDelete(Guid id)
         {
-            return View();
+            var user = await _userManager.FindByIdAsync($"{id}");
+            await _userManager.DeleteAsync(user);
+            return RedirectToAction("Index", "Admin");
         }
 
         public async Task<IActionResult> Register(UserDTO userDTO)
@@ -46,10 +51,11 @@ namespace BlogWebsite.Web.Controllers
                 var hasUser = await _userManager.FindByEmailAsync(userDTO.Email);
                 if (hasUser == null)
                 {
-                    var newUser = new UserEntity();
-                    newUser.Email = userDTO.Email;
-                    newUser.FirstName = userDTO.FirstName;
-                    newUser.LastName = userDTO.LastName;
+                    //var newUser = new UserEntity();
+                    //newUser.Email = userDTO.Email;
+                    //newUser.FirstName = userDTO.FirstName;
+                    //newUser.LastName = userDTO.LastName;
+                    var newUser = _mapper.Map<UserEntity>(userDTO);
                     newUser.UserName = Guid.NewGuid().ToString();
                     var result = await _userManager.CreateAsync(newUser, userDTO.Password);
 
@@ -57,6 +63,38 @@ namespace BlogWebsite.Web.Controllers
                     {
                         await _userManager.AddToRoleAsync(newUser, "Author");
                         return RedirectToAction("AuthorCreate", "Admin");
+                    }
+                    else
+                    {
+                        return RedirectToAction("Error", "Admin");
+                    }
+                }
+                else
+                {
+                    return RedirectToAction("Error", "Admin");
+                }
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("Error", "Admin");
+            }
+        }
+
+        public async Task<IActionResult> Update(UserUpdateDTO userUpdateDTO)
+        {
+            try
+            {
+                var updatedUser = await _userManager.FindByIdAsync(userUpdateDTO.Id.ToString());
+                if (updatedUser != null)
+                {
+                    updatedUser.Email = userUpdateDTO.Email;
+                    updatedUser.FirstName = userUpdateDTO.FirstName;
+                    updatedUser.LastName = userUpdateDTO.LastName;
+                    var result = await _userManager.UpdateAsync(updatedUser);
+
+                    if (result.Succeeded)
+                    {
+                        return RedirectToAction("Index", "Admin");
                     }
                     else
                     {

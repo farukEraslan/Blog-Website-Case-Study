@@ -9,6 +9,7 @@ namespace BlogWebsite.Business.MapProfiles
         public EntityMapper()
         {
             CreateMap<UserDTO, UserEntity>().ReverseMap();
+            CreateMap<UserUpdateDTO, UserEntity>().ReverseMap();
         }
     }
 }
