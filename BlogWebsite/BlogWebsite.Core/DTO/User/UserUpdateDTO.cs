@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BlogWebsite.Core.DTO
+namespace BlogWebsite.Core.DTO.User
 {
-    public class UserDTO
+    public class UserUpdateDTO
     {
+        public Guid Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }

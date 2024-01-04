@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using BlogWebsite.Core.Concrete;
-using BlogWebsite.Core.DTO;
+using BlogWebsite.Core.DTO.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -21,7 +21,8 @@ namespace BlogWebsite.Web.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var userList = await _userManager.GetUsersInRoleAsync("Author");
+            var users = await _userManager.GetUsersInRoleAsync("Author");
+            var userList = _mapper.Map<List<UserEntity>>(users);
             return View(userList);
         }
 
@@ -51,10 +52,6 @@ namespace BlogWebsite.Web.Controllers
                 var hasUser = await _userManager.FindByEmailAsync(userDTO.Email);
                 if (hasUser == null)
                 {
-                    //var newUser = new UserEntity();
-                    //newUser.Email = userDTO.Email;
-                    //newUser.FirstName = userDTO.FirstName;
-                    //newUser.LastName = userDTO.LastName;
                     var newUser = _mapper.Map<UserEntity>(userDTO);
                     newUser.UserName = Guid.NewGuid().ToString();
                     var result = await _userManager.CreateAsync(newUser, userDTO.Password);

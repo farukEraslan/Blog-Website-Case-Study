@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BlogWebsite.Core.DTO
+namespace BlogWebsite.Core.DTO.User
 {
-    public class UserUpdateDTO
+    public class UserDTO
     {
         public Guid Id { get; set; }
         public string FirstName { get; set; }

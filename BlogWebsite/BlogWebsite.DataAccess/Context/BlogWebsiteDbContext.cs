@@ -12,10 +12,10 @@ namespace BlogWebsite.DataAccess.Context
 
         }
 
-        private readonly DbSet<CategoryEntity> CategoryEntities;
-        private readonly DbSet<TagEntity> TagEntities;
-        private readonly DbSet<BlogPostEntity> BlogPostEntities;
-        private readonly DbSet<BlogPostTagEntity> BlogPostTagEntities;
+        public DbSet<CategoryEntity> CategoryEntity { get; set; }
+        public DbSet<TagEntity> TagEntity { get; set; }
+        public DbSet<BlogPostEntity> BlogPostEntity { get; set; }
+        public DbSet<BlogPostTagEntity> BlogPostTagEntity{ get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

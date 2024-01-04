@@ -1,5 +1,67 @@
-﻿@{
+﻿@using BlogWebsite.Core.DTO.BlogPost
+@{
     Layout = "_AuthorLayout";
 }
+@model List<BlogPostDTO>
 
 <h1>AUTHOR INDEX</h1>
+
+<div class="row">
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        @foreach (var blogPost in Model)
+        {
+            <div class="col">
+                @if (blogPost.Status == true)
+                {
+                    <div class="card border-success" style="width: 20rem;">
+                        <img src="/defaultImage.png" class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title">@blogPost.Header</h5>
+                            <small class="text-muted">@blogPost.CategoryName</small> <br />
+                            <small class="text-muted">Tags</small>
+                            <p class="card-text">
+                                @{
+                                    string[] words = blogPost.Content.Split(' ');
+                                    string preview = string.Join(" ", words.Take(10));
+                                }
+                                @preview ...
+                            </p>
+                            <div class="card-footer">
+                                <small class="text-muted">@blogPost.AuthorFullName</small>
+                            </div>
+                            <div class="card-footer">
+                                <small class="text-muted">@blogPost.CreatedDate</small>
+                            </div>
+                            <a class="btn btn-primary" asp-area="" asp-controller="Home" asp-action="BlogPost">Go to post</a>
+                        </div>
+                    </div>
+                }
+                else if (blogPost.Status == false)
+                {
+                    <div class="card border-danger" style="width: 20rem;">
+                        <img src="/defaultImage.png" class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title">@blogPost.Header</h5>
+                            <small class="text-muted">@blogPost.CategoryName</small> <br />
+                            <small class="text-muted">Tags</small>
+                            <p class="card-text">
+                                @{
+                                    string[] words = blogPost.Content.Split(' ');
+                                    string preview = string.Join(" ", words.Take(10));
+                                }
+                                @preview ...
+                            </p>
+                            <div class="card-footer">
+                                <small class="text-muted">@blogPost.AuthorFullName</small>
+                            </div>
+                            <div class="card-footer">
+                                <small class="text-muted">@blogPost.CreatedDate</small>
+                            </div>
+                            <a class="btn btn-primary" asp-area="" asp-controller="Home" asp-action="BlogPost">Go to post</a>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+</div>

@@ -1,0 +1,42 @@
+﻿@using BlogWebsite.Core.Concrete
+@using BlogWebsite.Core.DTO.BlogPost;
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<UserEntity> UserManager
+@{
+    if (User.Identity.IsAuthenticated == false)
+    {
+        Layout = "_BlogPostLayout";
+    }
+    else
+    {
+        var user = await UserManager.FindByNameAsync(UserManager.GetUserName(User));
+        var userRoles = await UserManager.GetRolesAsync(user);
+        foreach (var userRole in userRoles)
+        {
+            if (userRole == "Admin")
+            {
+                Layout = "_AdminLayout";
+            }
+            else if (userRole == "Author")
+            {
+                Layout = "_AuthorLayput";
+            }
+        }
+    }
+}
+
+@model BlogPostDTO
+
+<div class="container">
+    @* <div class="form-group">
+    <label for="tags">Tags</label>
+    <input type="text" class="form-control" id="tags" placeholder="seperate tags with comma..." asp-for="blogposttags">
+    </div> *@
+    <div class="form-group">
+        <h5 id="header">@Model.Header</h5>
+    </div>
+    <div class="form-group">
+        <p id="content">@Model.Content</p>
+    </div>
+</div>
+
