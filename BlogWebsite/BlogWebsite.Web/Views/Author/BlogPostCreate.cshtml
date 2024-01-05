@@ -19,12 +19,12 @@
             @foreach (var category in Model.CategoryDTO)
             {
                 <option value="@category.Id">@category.CategoryName</option>
-            }            
+            }
         </select>
     </div>
     @* <div class="form-group">
-        <label for="tags">Tags</label>
-        <input type="text" class="form-control" id="tags" placeholder="seperate tags with comma..." asp-for="blogposttags">
+    <label for="tags">Tags</label>
+    <input type="text" class="form-control" id="tags" placeholder="seperate tags with comma..." asp-for="blogposttags">
     </div> *@
     <div class="form-group">
         <label for="header">Header</label>
@@ -32,7 +32,7 @@
     </div>
     <div class="form-group">
         <label for="content">Content</label>
-        <textarea type="text" rows="15" class="form-control" id="content" placeholder="content" asp-for="BlogPostCreateDTO.Content"></textarea>
+        <textarea class="summernote" id="summernote" asp-for="BlogPostCreateDTO.Content"></textarea>
     </div>
     <div class="form-group">
         <label for="status">Status</label>
@@ -42,5 +42,23 @@
         </select>
     </div>
     <input type="hidden" value="@userId" asp-for="BlogPostCreateDTO.UserId" />
-    <button type="submit" class="btn btn-primary">Submit</button>
+    <button type="submit" class="btn btn-primary" onclick="submitForm()">Submit</button>
 </form>
+
+<script>
+    $(document).ready(function () {
+        $('.summernote').summernote();
+    });
+
+    function submitForm() {
+        // Summernote içeriğini al
+        var content = $('#summernote').summernote('code');
+
+        // Summernote içeriğini BlogPostCreateDTO'ya ata
+        $('#BlogPostCreateDTO_Content').val(content);
+
+        // Formu sunucuya gönder
+        $('#blogPostForm').submit();
+    }
+        
+</script>

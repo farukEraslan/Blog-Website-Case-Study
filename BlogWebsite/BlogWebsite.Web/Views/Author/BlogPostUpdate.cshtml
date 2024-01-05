@@ -1,6 +1,66 @@
-﻿@{
+﻿@using BlogWebsite.Core.Concrete
+@using BlogWebsite.Core.DTO.BlogPost
+@using Microsoft.AspNetCore.Identity
+@inject Microsoft.AspNetCore.Identity.UserManager<UserEntity> UserManager
+@{
     Layout = "_AuthorLayout";
 }
+@model BlogPostUpdateCombineModel;
 
+@{
+    var userId = UserManager.GetUserId(User);
+}
 
 <h1>BLOG POST UPDATE</h1>
+
+<form asp-area="" asp-controller="Author" asp-action="Create">
+    <input type="hidden" value="@Model.BlogPostUpdateDTO.Id" asp-for="BlogPostUpdateDTO.Id" />
+    <div class="form-group">
+        <label for="category">Category</label>
+        <select asp-for="BlogPostUpdateDTO.CategoryId">
+            @foreach (var category in Model.CategoryDTO)
+            {
+                <option value="@category.Id">@category.CategoryName</option>
+            }
+        </select>
+    </div>
+    @* <div class="form-group">
+    <label for="tags">Tags</label>
+    <input type="text" class="form-control" id="tags" placeholder="seperate tags with comma..." asp-for="blogposttags">
+    </div> *@
+    <div class="form-group">
+        <label for="header">Header</label>
+        <input type="text" class="form-control" id="header" placeholder="Header" asp-for="BlogPostUpdateDTO.Header">
+    </div>
+    <div class="form-group">
+        <label for="content">Content</label>
+        <textarea class="summernote" id="summernote" asp-for="BlogPostUpdateDTO.Content"></textarea>
+    </div>
+    <div class="form-group">
+        <label for="status">Status</label>
+        <select asp-for="BlogPostUpdateDTO.Status">
+            <option value="true">Yayında</option>
+            <option value="false">Yayında Değil</option>
+        </select>
+    </div>
+    <input type="hidden" value="@userId" asp-for="BlogPostUpdateDTO.UserId" />
+    <button type="submit" class="btn btn-primary" onclick="submitForm()">Submit</button>
+</form>
+
+<script>
+    $(document).ready(function () {
+        $('.summernote').summernote();
+    });
+
+    function submitForm() {
+        // Summernote içeriğini al
+        var content = $('#summernote').summernote('code');
+
+        // Summernote içeriğini BlogPostUpdateDTO'ya ata
+        $('#BlogPostUpdateDTO_Content').val(content);
+
+        // Formu sunucuya gönder
+        $('#blogPostForm').submit();
+    }
+
+</script>

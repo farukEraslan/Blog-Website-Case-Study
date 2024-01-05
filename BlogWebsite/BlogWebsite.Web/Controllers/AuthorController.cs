@@ -49,8 +49,10 @@ namespace BlogWebsite.Web.Controllers
             return View(blogPostCombineModel);
         }
 
-        public IActionResult BlogPostUpdate()
+        public IActionResult BlogPostUpdate(Guid id)
         {
+            var blogPost = _blogWebsiteDbContext.BlogPostEntity.FirstOrDefault(x => x.Id == id);
+            // var blogPostDto = _mapper.Map<BlogPostUpdateCombineModel>(blogPost);
             return View();
         }
 
@@ -65,6 +67,15 @@ namespace BlogWebsite.Web.Controllers
             blogPost.CreatedDate = DateTime.Now;
             blogPost.ModifiedDate = DateTime.Now;
             var result = _blogWebsiteDbContext.BlogPostEntity.Add(blogPost);
+            _blogWebsiteDbContext.SaveChanges();
+            return RedirectToAction("Index", "Author");
+        }
+
+        public IActionResult Update(BlogPostUpdateCombineModel blogPostUpdateCombineModel)
+        {
+            var updatedblogPost = _mapper.Map<BlogPostEntity>(blogPostUpdateCombineModel.BlogPostUpdateDTO);
+            updatedblogPost.ModifiedDate = DateTime.Now;
+            var result = _blogWebsiteDbContext.BlogPostEntity.Update(updatedblogPost);
             _blogWebsiteDbContext.SaveChanges();
             return RedirectToAction("Index", "Author");
         }
