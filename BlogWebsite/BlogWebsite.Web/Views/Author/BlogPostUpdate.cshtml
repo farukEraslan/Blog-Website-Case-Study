@@ -13,8 +13,9 @@
 
 <h1>BLOG POST UPDATE</h1>
 
-<form asp-area="" asp-controller="Author" asp-action="Create">
+<form asp-area="" asp-controller="Author" asp-action="Update">
     <input type="hidden" value="@Model.BlogPostUpdateDTO.Id" asp-for="BlogPostUpdateDTO.Id" />
+    <input type="hidden" value="@Model.BlogPostUpdateDTO.CreatedDate" asp-for="BlogPostUpdateDTO.CreatedDate" />
     <div class="form-group">
         <label for="category">Category</label>
         <select asp-for="BlogPostUpdateDTO.CategoryId">

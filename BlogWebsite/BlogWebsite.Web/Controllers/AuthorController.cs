@@ -51,14 +51,19 @@ namespace BlogWebsite.Web.Controllers
 
         public IActionResult BlogPostUpdate(Guid id)
         {
-            var blogPost = _blogWebsiteDbContext.BlogPostEntity.FirstOrDefault(x => x.Id == id);
-            // var blogPostDto = _mapper.Map<BlogPostUpdateCombineModel>(blogPost);
-            return View();
+            var blogPostUpdateDto = _mapper.Map<BlogPostUpdateDTO>(_blogWebsiteDbContext.BlogPostEntity.FirstOrDefault(x => x.Id == id));
+            var categoryDto = _mapper.Map<List<CategoryDTO>>(_blogWebsiteDbContext.CategoryEntity.ToList());
+            var blogPostUpdateCombineModel = new BlogPostUpdateCombineModel();
+            blogPostUpdateCombineModel.BlogPostUpdateDTO = blogPostUpdateDto;
+            blogPostUpdateCombineModel.CategoryDTO = categoryDto;
+            return View(blogPostUpdateCombineModel);
         }
 
-        public IActionResult BlogPostDelete()
+        public IActionResult BlogPostDelete(Guid id)
         {
-            return View();
+            _blogWebsiteDbContext.BlogPostEntity.Remove(_blogWebsiteDbContext.BlogPostEntity.FirstOrDefault(x=>x.Id == id));
+            _blogWebsiteDbContext.SaveChanges();
+            return RedirectToAction("Index", "Author");
         }
 
         public IActionResult Create(BlogPostCreateCombineModel blogPostCreateCombineModel)
@@ -74,6 +79,7 @@ namespace BlogWebsite.Web.Controllers
         public IActionResult Update(BlogPostUpdateCombineModel blogPostUpdateCombineModel)
         {
             var updatedblogPost = _mapper.Map<BlogPostEntity>(blogPostUpdateCombineModel.BlogPostUpdateDTO);
+            //updatedblogPost.CreatedDate = blogPostUpdateCombineModel.BlogPostUpdateDTO.CreatedDate;
             updatedblogPost.ModifiedDate = DateTime.Now;
             var result = _blogWebsiteDbContext.BlogPostEntity.Update(updatedblogPost);
             _blogWebsiteDbContext.SaveChanges();

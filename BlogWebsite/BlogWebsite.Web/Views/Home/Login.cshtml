@@ -7,11 +7,11 @@
 <h5 class="card-title text-center mb-5 fw-light fs-5">Sign In</h5>
 <form asp-area="" asp-controller="Home" asp-action="SignIn">
     <div class="form-floating mb-3">
-        <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com" asp-for="Email">
+        <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com" asp-for="Email" oninput="emailValidation()">
         <label for="floatingInput">Email address</label>
     </div>
     <div class="form-floating mb-3">
-        <input type="password" class="form-control" id="floatingPassword" placeholder="Password" asp-for="Password">
+        <input type="password" class="form-control" id="floatingPassword" placeholder="Password" asp-for="Password" onchange="passwordValidation()">
         <label for="floatingPassword">Password</label>
     </div>
     <div class="d-grid">
@@ -22,3 +22,24 @@
     </div>
     <hr class="my-4">
 </form>
+
+<script>
+    const emailValidation = () => {
+        var inputElement = document.getElementById("floatingInput");
+        var text = inputElement.value;
+        if (text == " ") 
+        {
+            inputElement.classList = "border-danger";;
+            console.log(inputElement.classList);
+        }
+    }
+
+    const passwordValidation = () => {
+        var inputElement = document.getElementById("floatingPassword");
+        var text = inputElement.value;
+        if (text == " ") {
+            inputElement.classList = "border-danger";
+            console.log(inputElement.classList);
+        }
+    }
+</script>

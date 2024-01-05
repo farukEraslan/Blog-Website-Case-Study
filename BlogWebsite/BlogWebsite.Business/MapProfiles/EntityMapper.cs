@@ -18,8 +18,13 @@ namespace BlogWebsite.Business.MapProfiles
             CreateMap<BlogPostUpdateDTO, BlogPostEntity>().ReverseMap();
             CreateMap<List<CategoryDTO>, BlogPostCreateCombineModel>().ForMember(dest => dest.CategoryDTO, opt => opt.MapFrom(src => src));
             CreateMap<List<BlogPostCreateDTO>, BlogPostCreateCombineModel>().ForMember(dest => dest.BlogPostCreateDTO, opt => opt.MapFrom(src => src));
+            
+            // Blog Post Update
             CreateMap<List<CategoryDTO>, BlogPostUpdateCombineModel>().ForMember(dest => dest.CategoryDTO, opt => opt.MapFrom(src => src));
             CreateMap<List<BlogPostUpdateDTO>, BlogPostUpdateCombineModel>().ForMember(dest => dest.BlogPostUpdateDTO, opt => opt.MapFrom(src => src));
+            //CreateMap<List<BlogPostEntity>, BlogPostUpdateCombineModel>()
+            //    .ForMember(dest => dest.BlogPostUpdateDTO, opt => opt.MapFrom(src => new BlogPostUpdateDTO { }))
+            //    .ForMember(dest => dest.CategoryDTO, opt => opt.MapFrom(src => src.Select(entity => new CategoryDTO { }).ToList()));
 
 
         }
