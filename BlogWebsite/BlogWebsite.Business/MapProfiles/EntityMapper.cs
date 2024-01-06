@@ -11,7 +11,7 @@ namespace BlogWebsite.Business.MapProfiles
             CreateMap<CategoryDTO, CategoryEntity>().ReverseMap();
             CreateMap<BlogPostCreateDTO, BlogPostEntity>().ReverseMap();
             CreateMap<BlogPostUpdateDTO, BlogPostEntity>().ReverseMap();
-            CreateMap<IList<string>, RoleDTO>();
+            CreateMap<IList<string>, UserDTO>();
 
 
 

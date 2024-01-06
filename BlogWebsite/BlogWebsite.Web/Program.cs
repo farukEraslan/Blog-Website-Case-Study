@@ -1,11 +1,3 @@
-using AutoMapper;
-using BlogWebsite.Business.Abstracts;
-using BlogWebsite.Business.DependencyInjection;
-using BlogWebsite.Business.MapProfiles;
-using BlogWebsite.Business.Services;
-using BlogWebsite.Core.Concrete;
-using BlogWebsite.DataAccess.Context;
-using Microsoft.EntityFrameworkCore;
 
 namespace BlogWebsite.Web
 {

@@ -1,7 +1,6 @@
-﻿@using BlogWebsite.Core.Concrete
-@using BlogWebsite.Core.DTO.BlogPost;
-@using Microsoft.AspNetCore.Identity
+﻿
 @inject UserManager<UserEntity> UserManager
+
 @{
     if (User.Identity.IsAuthenticated == false)
     {

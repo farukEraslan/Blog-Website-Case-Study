@@ -1,13 +1,4 @@
-﻿using AutoMapper;
-using BlogWebsite.Core.Concrete;
-using BlogWebsite.Core.DTO.BlogPost;
-using BlogWebsite.Core.DTO.Category;
-using BlogWebsite.DataAccess.Context;
-using BlogWebsite.Web.Models;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-
+﻿
 namespace BlogWebsite.Web.Controllers
 {
     [Authorize(Policy = "Author")]

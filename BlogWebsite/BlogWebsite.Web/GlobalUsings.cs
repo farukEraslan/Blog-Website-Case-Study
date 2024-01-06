@@ -1,0 +1,15 @@
+﻿global using AutoMapper;
+global using BlogWebsite.Business.Abstracts;
+global using Microsoft.AspNetCore.Authorization;
+global using Microsoft.AspNetCore.Mvc;
+global using BlogWebsite.Core.Concrete;
+global using BlogWebsite.Core.DTO.BlogPost;
+global using BlogWebsite.Core.DTO.Category;
+global using BlogWebsite.DataAccess.Context;
+global using Microsoft.AspNetCore.Identity;
+global using BlogWebsite.Core.DTO.Login;
+global using BlogWebsite.Web.Models;
+global using System.Diagnostics;
+global using BlogWebsite.Business.DependencyInjection;
+global using BlogWebsite.Business.MapProfiles;
+global using Microsoft.EntityFrameworkCore;

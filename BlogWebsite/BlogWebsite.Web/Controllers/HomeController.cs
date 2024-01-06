@@ -1,10 +1,3 @@
-using AutoMapper;
-using BlogWebsite.Business.Abstracts;
-using BlogWebsite.Core.DTO.Login;
-using BlogWebsite.DataAccess.Context;
-using BlogWebsite.Web.Models;
-using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
 
 namespace BlogWebsite.Web.Controllers
 {
