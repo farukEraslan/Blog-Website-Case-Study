@@ -10,5 +10,7 @@ namespace BlogWebsite.Core.DTO.Category
     {
         public Guid Id { get; set; }
         public string CategoryName { get; set; }
+        public DateTime CreatedDate { get; set; }
+        public DateTime ModifiedDate { get; set; }
     }
 }

@@ -1,10 +1,8 @@
 using AutoMapper;
-using BlogWebsite.Core.Concrete;
-using BlogWebsite.Core.DTO.BlogPost;
+using BlogWebsite.Business.Abstracts;
 using BlogWebsite.Core.DTO.Login;
 using BlogWebsite.DataAccess.Context;
 using BlogWebsite.Web.Models;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -13,34 +11,20 @@ namespace BlogWebsite.Web.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly UserManager<UserEntity> _userManager;
-        private readonly SignInManager<UserEntity> _signInManager;
-        private readonly IMapper _mapper;
-        private readonly BlogWebsiteDbContext _blogWebsiteDbContext;
+        private readonly IBlogPostService _blogPostService;
+        private readonly ILoginService _loginService;
 
-        public HomeController(ILogger<HomeController> logger, UserManager<UserEntity> userManager, SignInManager<UserEntity> signInManager, IMapper mapper, BlogWebsiteDbContext blogWebsiteDbContext)
+        public HomeController(ILogger<HomeController> logger, IBlogPostService blogPostService, ILoginService loginService)
         {
             _logger = logger;
-            _userManager = userManager;
-            _signInManager = signInManager;
-            _mapper = mapper;
-            _blogWebsiteDbContext = blogWebsiteDbContext;
+            _blogPostService = blogPostService;
+            _loginService = loginService;
         }
 
         public async Task<IActionResult> Index()
         {
-            // Giriþ yapan kullanýcýnýn blog postlarýný bulma
-            var blogPosts = _blogWebsiteDbContext.BlogPostEntity.Where(x => x.Status == true).ToList();
-            var blogPostsList = _mapper.Map<List<BlogPostDTO>>(blogPosts);
-            // Kategori ve isim atanmasý
-            foreach (var blogPostDto in blogPostsList)
-            {
-                var category = _blogWebsiteDbContext.CategoryEntity.FirstOrDefault(x => x.Id == blogPostDto.CategoryId);
-                blogPostDto.CategoryName = category.CategoryName;
-                var author = await _userManager.FindByIdAsync(blogPostDto.UserId.ToString());
-                blogPostDto.AuthorFullName = $"{author.FirstName} {author.LastName}";
-            }
-            return View(blogPostsList);
+            var blogPosts = await _blogPostService.GetAll();
+            return View(blogPosts);
         }
 
         public IActionResult Login()
@@ -50,43 +34,30 @@ namespace BlogWebsite.Web.Controllers
 
         public async Task<IActionResult> SignIn(LoginDTO loginDTO)
         {
-            var user = await _userManager.FindByEmailAsync(loginDTO.Email);
-            var result = await _signInManager.PasswordSignInAsync(user, loginDTO.Password, false, false);
-            if (result.Succeeded)
+            var userRoles = await _loginService.LoginAsync(loginDTO);
+            foreach (var role in userRoles)
             {
-
-                if (HttpContext.User.IsInRole("Admin"))
+                if (role == "Admin")
                 {
                     return RedirectToAction("Index", "Admin");
                 }
-                else if (HttpContext.User.IsInRole("Author"))
+                else if (role == "Author")
                 {
                     return RedirectToAction("Index", "Author");
                 }
-                else
-                {
-                    await _signInManager.SignOutAsync();
-                    return RedirectToAction("Login", "Home");
-                }
             }
-            else
-            {
-                return RedirectToAction("Login", "Home");
-            }
-
+            return RedirectToAction("Login", "Home");
         }
 
         public async Task<IActionResult> SignOut()
         {
-            await _signInManager.SignOutAsync();
+            await _loginService.LogoutAsync();
             return RedirectToAction("Index", "Home");
         }
 
         public IActionResult BlogPost(Guid id)
         {
-            var blogPost = _blogWebsiteDbContext.BlogPostEntity.FirstOrDefault(x=> x.Id == id);
-            var blogPostDto = _mapper.Map<BlogPostDTO>(blogPost);
-            return View(blogPostDto);
+            return View( _blogPostService.GetById(id) );
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

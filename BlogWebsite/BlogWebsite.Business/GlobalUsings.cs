@@ -1,0 +1,10 @@
+﻿global using AutoMapper;
+global using BlogWebsite.Core.Concrete;
+global using BlogWebsite.Core.DTO.BlogPost;
+global using BlogWebsite.Core.DTO.Category;
+global using BlogWebsite.Core.DTO.Login;
+global using BlogWebsite.Core.DTO.Role;
+global using BlogWebsite.Core.DTO.User;
+global using BlogWebsite.Business.Abstracts;
+global using BlogWebsite.DataAccess.Context;
+global using Microsoft.AspNetCore.Identity;

@@ -1,5 +1,8 @@
 using AutoMapper;
+using BlogWebsite.Business.Abstracts;
+using BlogWebsite.Business.DependencyInjection;
 using BlogWebsite.Business.MapProfiles;
+using BlogWebsite.Business.Services;
 using BlogWebsite.Core.Concrete;
 using BlogWebsite.DataAccess.Context;
 using Microsoft.EntityFrameworkCore;
@@ -14,6 +17,11 @@ namespace BlogWebsite.Web
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+            
+            // Servis DI Containerlarý
+            builder.Services.BusinessServices();
+
+
 
             // Database Connection String
             builder.Services.AddDbContext<BlogWebsiteDbContext>(options =>
@@ -62,7 +70,6 @@ namespace BlogWebsite.Web
                     policy.RequireRole("Author");
                 });
             });
-
 
             var app = builder.Build();
 
