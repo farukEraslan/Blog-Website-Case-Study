@@ -17,5 +17,10 @@ namespace BlogWebsite.Business.Services
         {
             return _mapper.Map<CategoryDTO>( _blogWebsiteDbContext.CategoryEntity.FirstOrDefault(x => x.Id == id) );
         }
+
+        public List<CategoryDTO> GetAll()
+        {
+            return _mapper.Map<List<CategoryDTO>>(_blogWebsiteDbContext.CategoryEntity.ToList());
+        }
     }
 }
