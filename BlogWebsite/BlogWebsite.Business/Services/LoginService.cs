@@ -20,7 +20,8 @@ namespace BlogWebsite.Business.Services
             var result = await _signInManager.PasswordSignInAsync(user, loginDTO.Password, false, false);
             if (result.Succeeded)
             {
-                 return await _userManager.GetRolesAsync(user);
+                 var userRoles =  await _userManager.GetRolesAsync(user);
+                return userRoles;
             }
             else
             {

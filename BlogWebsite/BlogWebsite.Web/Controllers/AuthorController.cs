@@ -7,30 +7,31 @@ namespace BlogWebsite.Web.Controllers
         private readonly BlogWebsiteDbContext _blogWebsiteDbContext;
         private readonly IMapper _mapper;
         private readonly UserManager<UserEntity> _userManager;
+        private readonly IUserService _userService;
+        private readonly IBlogService _blogService;
+        private readonly ICategoryService _categoryService;
 
-        public AuthorController(BlogWebsiteDbContext blogWebsiteDbContext, IMapper mapper, UserManager<UserEntity> userManager)
+        public AuthorController(BlogWebsiteDbContext blogWebsiteDbContext, IMapper mapper, UserManager<UserEntity> userManager, IUserService userService, IBlogService blogService, ICategoryService categoryService)
         {
             _blogWebsiteDbContext = blogWebsiteDbContext;
             _mapper = mapper;
             _userManager = userManager;
+            _userService = userService;
+            _blogService = blogService;
+            _categoryService = categoryService;
         }
 
         public async Task<IActionResult> Index()
         {
-            // Giriş yapan kullanıcının ID sini bulma
-            var author = await _userManager.FindByNameAsync(HttpContext.User.Identity.Name);
-            // Giriş yapan kullanıcının blog postlarını bulma
-            var blogPosts = _blogWebsiteDbContext.BlogPostEntity.Where(x => x.UserId == author.Id).ToList();
-            var blogPostsList = _mapper.Map<List<BlogPostDTO>>(blogPosts);
-            // Kategori ve isim atanması
-            foreach (var blogPostDto in blogPostsList)
+            var user = await _userService.GetLoggedUser();
+            var userBlogPosts = await _blogService.GetUserBlogPosts(user);
+            foreach (var userBlogPost in userBlogPosts)
             {
-                var category = _blogWebsiteDbContext.CategoryEntity.FirstOrDefault(x => x.Id == blogPostDto.CategoryId);
-                blogPostDto.CategoryName = category.CategoryName;
-                blogPostDto.AuthorFullName = $"{author.FirstName} {author.LastName}";
+                var category = _categoryService.GetById(userBlogPost.CategoryId);
+                userBlogPost.CategoryName = category.CategoryName;
+                userBlogPost.AuthorFullName = $"{user.FirstName} {user.LastName}";
             }
-
-            return View(blogPostsList);
+            return View(userBlogPosts);
         }
 
         public async Task<IActionResult> BlogPostCreate()

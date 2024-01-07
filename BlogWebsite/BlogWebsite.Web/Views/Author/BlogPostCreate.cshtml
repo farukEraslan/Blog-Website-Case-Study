@@ -1,22 +1,18 @@
 ﻿
-@inject Microsoft.AspNetCore.Identity.UserManager<UserEntity> UserManager
-@{
-    Layout = "_AuthorLayout";
-}
-@model BlogPostUpdateCombineModel;
+@inject UserManager<UserEntity> UserManager
+
+@model BlogPostCreateCombineModel;
 
 @{
     var userId = UserManager.GetUserId(User);
 }
 
-<h1>BLOG POST UPDATE</h1>
+<h1>BLOG POST CREATE</h1>
 
-<form asp-area="" asp-controller="Author" asp-action="Update">
-    <input type="hidden" value="@Model.BlogPostUpdateDTO.Id" asp-for="BlogPostUpdateDTO.Id" />
-    <input type="hidden" value="@Model.BlogPostUpdateDTO.CreatedDate" asp-for="BlogPostUpdateDTO.CreatedDate" />
+<form asp-area="" asp-controller="Author" asp-action="Create">
     <div class="form-group">
         <label for="category">Category</label>
-        <select asp-for="BlogPostUpdateDTO.CategoryId">
+        <select asp-for="BlogPostCreateDTO.CategoryId">
             @foreach (var category in Model.CategoryDTO)
             {
                 <option value="@category.Id">@category.CategoryName</option>
@@ -29,20 +25,20 @@
     </div> *@
     <div class="form-group">
         <label for="header">Header</label>
-        <input type="text" class="form-control" id="header" placeholder="Header" asp-for="BlogPostUpdateDTO.Header">
+        <input type="text" class="form-control" id="header" placeholder="Header" asp-for="BlogPostCreateDTO.Header">
     </div>
     <div class="form-group">
         <label for="content">Content</label>
-        <textarea class="summernote" id="summernote" asp-for="BlogPostUpdateDTO.Content"></textarea>
+        <textarea class="summernote" id="summernote" asp-for="BlogPostCreateDTO.Content"></textarea>
     </div>
     <div class="form-group">
         <label for="status">Status</label>
-        <select asp-for="BlogPostUpdateDTO.Status">
+        <select asp-for="BlogPostCreateDTO.Status">
             <option value="true">Yayında</option>
             <option value="false">Yayında Değil</option>
         </select>
     </div>
-    <input type="hidden" value="@userId" asp-for="BlogPostUpdateDTO.UserId" />
+    <input type="hidden" value="@userId" asp-for="BlogPostCreateDTO.UserId" />
     <button type="submit" class="btn btn-primary" onclick="submitForm()">Submit</button>
 </form>
 
@@ -55,11 +51,11 @@
         // Summernote içeriğini al
         var content = $('#summernote').summernote('code');
 
-        // Summernote içeriğini BlogPostUpdateDTO'ya ata
-        $('#BlogPostUpdateDTO_Content').val(content);
+        // Summernote içeriğini BlogPostCreateDTO'ya ata
+        $('#BlogPostCreateDTO_Content').val(content);
 
         // Formu sunucuya gönder
         $('#blogPostForm').submit();
     }
-
+        
 </script>

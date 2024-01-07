@@ -12,8 +12,11 @@ namespace BlogWebsite.Web
             
             // Servis DI Containerlarý
             builder.Services.BusinessServices();
+            
 
 
+            // HttpContextAccessor
+            builder.Services.AddHttpContextAccessor();
 
             // Database Connection String
             builder.Services.AddDbContext<BlogWebsiteDbContext>(options =>

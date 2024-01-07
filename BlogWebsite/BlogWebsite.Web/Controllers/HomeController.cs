@@ -30,14 +30,8 @@ namespace BlogWebsite.Web.Controllers
             var userRoles = await _loginService.LoginAsync(loginDTO);
             foreach (var role in userRoles)
             {
-                if (role == "Admin")
-                {
-                    return RedirectToAction("Index", "Admin");
-                }
-                else if (role == "Author")
-                {
-                    return RedirectToAction("Index", "Author");
-                }
+                if (role == "Admin") return RedirectToAction("Index", "Admin");
+                else if (role == "Author") return RedirectToAction("Index", "Author");
             }
             return RedirectToAction("Login", "Home");
         }

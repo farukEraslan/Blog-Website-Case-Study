@@ -13,3 +13,4 @@ global using System.Diagnostics;
 global using BlogWebsite.Business.DependencyInjection;
 global using BlogWebsite.Business.MapProfiles;
 global using Microsoft.EntityFrameworkCore;
+global using BlogWebsite.Core.DTO.User;

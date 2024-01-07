@@ -1,5 +1,6 @@
 ﻿using BlogWebsite.Core.Concrete;
 using BlogWebsite.DataAccess.Config;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -7,9 +8,10 @@ namespace BlogWebsite.DataAccess.Context
 {
     public class BlogWebsiteDbContext : IdentityDbContext<UserEntity, RoleEntity, Guid>
     {
-        public BlogWebsiteDbContext(DbContextOptions<BlogWebsiteDbContext> options) : base(options)
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        public BlogWebsiteDbContext(DbContextOptions<BlogWebsiteDbContext> options, IHttpContextAccessor httpContextAccessor) : base(options)
         {
-
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public DbSet<CategoryEntity> CategoryEntity { get; set; }
